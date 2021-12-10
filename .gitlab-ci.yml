@@ -1,0 +1,25 @@
+image: golang:1.9
+
+variables:
+  REPO_NAME: gitlab.ie.u-ryukyu.ac.jp/e205743/e205743-filewrite
+
+stages:
+  - build
+  - test
+
+build-project:
+  stage: build
+  script:
+    - mkdir -p $GOPATH/src/$REPO_NAME
+    - mv $CI_PROJECT_DIR/* $GOPATH/src/$REPO_NAME
+    - cd $GOPATH/src/$REPO_NAME
+    - go build ./...
+
+test-project:
+  stage: test
+  script:
+    - mkdir -p $GOPATH/src/$REPO_NAME
+    - mv $CI_PROJECT_DIR/* $GOPATH/src/$REPO_NAME
+    - cd $GOPATH/src/$REPO_NAME
+    - go test ./... -cover
+  coverage: '/coverage: \d+\.\d+% of statements/'
